@@ -1,0 +1,51 @@
+{
+    "items": [
+        {
+            "name": "Knight",
+            "id": 26000000,
+            "maxLevel": 16,
+            "maxEvolutionLevel": 3,
+            "elixirCost": 3,
+            "rarity": "common"
+        },
+        {
+            "name": "Archers",
+            "id": 26000001,
+            "maxLevel": 16,
+            "maxEvolutionLevel": 1,
+            "elixirCost": 3,
+            "rarity": "common"
+        },
+        {
+            "name": "Goblins",
+            "id": 26000002,
+            "maxLevel": 16,
+            "maxEvolutionLevel": 2,
+            "elixirCost": 2,
+            "rarity": "common"
+        },
+        {
+            "name": "Giant",
+            "id": 26000003,
+            "maxLevel": 14,
+            "maxEvolutionLevel": 2,
+            "elixirCost": 5,
+            "rarity": "rare"
+        },
+        {
+            "name": "P.E.K.K.A",
+            "id": 26000004,
+            "maxLevel": 11,
+            "maxEvolutionLevel": 1,
+            "elixirCost": 7,
+            "rarity": "epic"
+        },
+        {
+            "name": "Minions",
+            "id": 26000005,
+            "maxLevel": 16,
+            "elixirCost": 3,
+            "rarity": "common"
+        }
+    ]
+}

@@ -1,3 +1,5 @@
+#SCRIPT PARA PRUEBA INICIAL DE API
+
 import requests
 import os
 from dotenv import load_dotenv
