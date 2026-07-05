@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 from config import BRONZE_DIR
+from loaders.postgres_loader import conectar
 
 def cargar_snapshot(fecha:str):
     try:
@@ -10,6 +11,18 @@ def cargar_snapshot(fecha:str):
     except Exception as e:
         print(f"Error al cargar el snapshot: {e}")
         return None
+
+def cargar_snapshot_postgres(fecha: str):
+    conn = conectar()
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT datos_completos FROM cartas_snapshot WHERE fecha = %s",
+        (fecha,),
+    )
+    filas = [fila[0] for fila in cur.fetchall()]
+    cur.close()
+    conn.close()
+    return pd.DataFrame(filas)
 
 def detectar_cambios(df_ayer, df_hoy):
     comparacion = pd.merge(df_ayer, df_hoy, on='id', suffixes=('_ayer','_hoy'), how='outer')
