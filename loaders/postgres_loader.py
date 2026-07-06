@@ -80,6 +80,24 @@ def guardar_cambios(cambios: list, fecha: str):
     conn.close()
 
 
+def guardar_ejecucion(fecha: str, estado: str, cartas_procesadas: int = None, cambios_detectados: int = None, duracion_segundos: float = None, error: str = None):
+    conn = conectar()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        INSERT INTO ejecuciones_pipeline
+            (fecha, estado, cartas_procesadas, cambios_detectados, duracion_segundos, error)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        """,
+        (fecha, estado, cartas_procesadas, cambios_detectados, duracion_segundos, error),
+    )
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
 def guardar_rechazadas(rechazadas: list, fecha: str):
     if not rechazadas:
         return

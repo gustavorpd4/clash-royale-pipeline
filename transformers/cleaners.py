@@ -66,13 +66,3 @@ def detectar_cambios(df_ayer, df_hoy):
                 })
 
     return cambios
-
-
-if __name__ == "__main__":
-    df_ayer = cargar_snapshot("2026-07-03")
-    df_hoy = cargar_snapshot("2026-07-04")
-
-    cambios = detectar_cambios(df_ayer, df_hoy)
-    for c in cambios:
-        print(c)
-    print(f"Total cambios: {len(cambios)}")
