@@ -34,17 +34,23 @@ La API de Supercell exige que la IP que consulta esté en una whitelist. Las IPs
 
 ## Estructura del proyecto
 
+El código está organizado en capas por responsabilidad (extracción, validación, transformación, carga), con el punto de entrada y la configuración compartida en la raíz junto a los archivos de infraestructura (`Dockerfile`, `requirements.txt`) que las herramientas esperan encontrar ahí:
+
 ```
+pipeline.py                  # orquestador end-to-end (punto de entrada)
 config.py                    # constantes centralizadas (URLs, nombres de env vars, rutas)
+Dockerfile / .dockerignore   # empaquetado del pipeline
+requirements.txt
+
 extractors/clash_api.py      # llamada a la API de Supercell
 validators/schemas.py        # modelo Pydantic Card + separación válidas/rechazadas
 transformers/cleaners.py     # carga de snapshots (local o Postgres) + detección de cambios
 loaders/bronze_loader.py     # persiste el snapshot crudo como JSON particionado
-loaders/postgres_loader.py   # inserta cartas, cambios y rechazos en Neon
-pipeline.py                  # orquestador end-to-end
+loaders/postgres_loader.py   # inserta cartas, cambios, rechazos y ejecuciones en Neon
+
 sql/create_tables.sql        # DDL de las tablas del warehouse
-.github/workflows/           # cron diario
-tests/                       # fixtures y prueba del extractor
+.github/workflows/           # cron diario (self-hosted)
+tests/                       # pytest: detección de cambios y validación
 ```
 
 ## Tablas en Postgres (Neon)
@@ -54,7 +60,7 @@ tests/                       # fixtures y prueba del extractor
 | `cartas_snapshot` | Snapshot desnormalizado por día, PK `(fecha, carta_id)`, incluye el JSON completo en `datos_completos` |
 | `cambios_detectados` | Diffs campo a campo entre el snapshot de ayer y el de hoy |
 | `registros_rechazados` | Registros que fallaron la validación Pydantic, con el payload crudo |
-| `ejecuciones_pipeline` | Metadata de cada corrida del pipeline (tabla creada, aún sin usar) |
+| `ejecuciones_pipeline` | Una fila por corrida: estado (éxito/error), cartas procesadas, cambios detectados, duración y mensaje de error si falló |
 
 ## Qué detecta `detectar_cambios`
 
