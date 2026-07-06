@@ -17,7 +17,8 @@ CREATE TABLE cambios_detectados (
     nombre TEXT,
     campo_cambiado TEXT,
     valor_anterior TEXT,
-    valor_nuevo TEXT
+    valor_nuevo TEXT,
+    UNIQUE (fecha, carta_id, campo_cambiado)
 );
 
 CREATE TABLE ejecuciones_pipeline (

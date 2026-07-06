@@ -64,6 +64,7 @@ def guardar_cambios(cambios: list, fecha: str):
             INSERT INTO cambios_detectados
                 (fecha, carta_id, nombre, campo_cambiado, valor_anterior, valor_nuevo)
             VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT (fecha, carta_id, campo_cambiado) DO NOTHING
             """,
             (
                 fecha,
@@ -125,11 +126,3 @@ def guardar_rechazadas(rechazadas: list, fecha: str):
     conn.commit()
     cur.close()
     conn.close()
-
-
-if __name__ == "__main__":
-    from transformers.cleaners import cargar_snapshot
-
-    df_hoy = cargar_snapshot("2026-07-04")
-    guardar_cartas(df_hoy, "2026-07-04")
-    print(f"{len(df_hoy)} cartas guardadas en cartas_snapshot")
