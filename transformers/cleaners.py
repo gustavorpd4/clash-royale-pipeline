@@ -39,6 +39,16 @@ def detectar_cambios(df_ayer, df_hoy):
             })
             continue
 
+        if pd.isna(fila['name_hoy']):
+            cambios.append({
+                "carta_id": fila['id'],
+                "nombre": fila['name_ayer'],
+                "campo_cambiado": "carta_eliminada",
+                "valor_anterior": "existente",
+                "valor_nuevo": None,
+            })
+            continue
+
         for columna in columnas_a_comparar:
             valor_ayer = fila[f'{columna}_ayer']
             valor_hoy = fila[f'{columna}_hoy']
